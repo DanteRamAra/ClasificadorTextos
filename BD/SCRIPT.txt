@@ -17,3 +17,13 @@ fecha_publi datetime default current_timestamp,
 etiqueta_publi ENUM('queja','duda','venta','gestionEscolar'),
 id_usuario int,
 foreign key (id_usuario) references usuarios(id_usuario));
+
+
+create table comentarios(
+id_comentario int auto_increment primary key,
+contenido_comentario varchar(120),
+fecha_comentario datetime default current_timestamp,
+id_publi int,
+foreign key (id_publi) references publicaciones(id_publi),
+id_usuario int,
+foreign key (id_usuario) references usuarios(id_usuario));
