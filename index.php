@@ -1,37 +1,13 @@
-<?php
-    session_start();
-
-    require ('FuncionesPHP/funciones.php');
-    require('funcion.php');
-    verificarSesionActiva();
-
-    if($_POST){
-    $contra=hash('sha256',$_POST['pass']);
-    $datos=
-    [$email=$_POST['email'],
-    $contra];
-    $id_usuario = usuario::validarUsuario($datos);
-    if ($id_usuario) {
-            session_start();
-            $_SESSION['id_usuario'] = $id_usuario;
-            header('location:inicio.php');
-            exit();
-        } else {
-            echo "Hubo un problema al iniciar sesion.";
-        }
-    }    
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro</title>
+    <title>Document</title>
     <link rel="stylesheet" href="https://bootswatch.com/5/flatly/bootstrap.min.css">
 </head>
 <body>
-<nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+    <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">Clasificador</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,14 +30,5 @@
     </div>
   </div>
 </nav>
-<body>
-    <form action="inicioS.php" method="post">
-        <input type="email" name="email" id="" placeholder="Email">
-        <br>
-        <input type="password" name="pass" id="" placeholder="Password">
-        <br>
-        <input type="submit" value="Enviar">
-    </form>
 </body>
 </html>
-
