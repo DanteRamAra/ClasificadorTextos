@@ -7,41 +7,35 @@
     if($_POST){
       //limpieza de datos en caso de tener espacios al inicio o final
       $nombreLimpio=trim($_POST['name']);
-      $appLimpio=trim($_POST['apm']);
+      $appLimpio=trim($_POST['app']);
       $apmLimpio=trim($_POST['apm']);
-      $emailLimpio=trim($_POST['name']);
-      $passLimpio=trim($_POST['name']);
+      $emailLimpio=trim($_POST['email']);
+      $passLimpio=trim($_POST['pass']);
 
       //validaciones finales 
       $passValida=strlen($_POST['pass'])>=8;
       $emailNoExistente=!validaciones::encontrarEmail($emailLimpio);
       $emailValido=filter_var($emailLimpio,FILTER_VALIDATE_EMAIL);
+      $nombreValido=preg_match('/^[a-zA-Z\s]{3,}$/u',$nombreLimpio);
+      $appValido=preg_match('/^[a-zA-Z\s]{3,}$/u',$appLimpio);
+      $apmValido=preg_match('/^[a-zA-Z\s]{3,}$/u',$apmLimpio);
 
-      if(strlen($_POST['pass'])>=8){//validaciones back
-        
-        if(!($_POST['email']==$verificaEmail)){//verifica que no exista el email
+      if($passValida && $emailNoExistente && $emailValido && $nombreValido && $appValido && $apmValido){//validaciones back
+  
+        $contra=password_hash($passLimpio,PASSWORD_DEFAULT);//cifra contraseña
+        //arreglo para la BD
+        $fechaNac = $_POST['fechaNac'];
+        $datos=[$nombreLimpio,$appLimpio,$apmLimpio,$fechaNac,$emailLimpio,$contra];
 
-          $contra=password_hash($_POST['pass'], PASSWORD_DEFAULT);//cifra contraseña
-          //arreglo para la BD
-          $datos=[$name=$_POST['name'],
-          $app=$_POST['app'],
-          $apm=$_POST['apm'],
-          $fechaNac=$_POST['fechaNac'],
-          $email=$_POST['email'],
-          $contra];
-
-          $id_usuario = usuario::register($datos); //registra al usuario y saca el id
-
-        }
-       
+        $id_usuario = usuario::register($datos); //registra al usuario y saca el id
 
       }else{
         die("Error: Datos ingresados incorrectamente");
+        exit();
       }
 
       
       if($id_usuario){//redirige a inicio.php
-          session_start();
           $_SESSION['id_usuario']=$id_usuario;
           header('location:inicio.php');
           exit();
