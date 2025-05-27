@@ -24,7 +24,6 @@
     Comprobar existencia del usuario (DB).
     Validar contraseña (password_verify).
     Bloquear tras intentos fallidos.
-   Generar token seguro (JWT/sesión).
     */ 
 ?>
 

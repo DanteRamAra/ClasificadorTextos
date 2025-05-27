@@ -16,6 +16,7 @@
       $passValida=strlen($_POST['pass'])>=8;
       $emailNoExistente=!validaciones::encontrarEmail($emailLimpio);
       $emailValido=filter_var($emailLimpio,FILTER_VALIDATE_EMAIL);
+      //regex
       $nombreValido=preg_match('/^[a-zA-Z\s]{3,}$/u',$nombreLimpio);
       $appValido=preg_match('/^[a-zA-Z\s]{3,}$/u',$appLimpio);
       $apmValido=preg_match('/^[a-zA-Z\s]{3,}$/u',$apmLimpio);
@@ -23,10 +24,10 @@
       if($passValida && $emailNoExistente && $emailValido && $nombreValido && $appValido && $apmValido){//validaciones back
   
         $contra=password_hash($passLimpio,PASSWORD_DEFAULT);//cifra contraseña
-        //arreglo para la BD
         $fechaNac = $_POST['fechaNac'];
+      
+        //arreglo para la BD
         $datos=[$nombreLimpio,$appLimpio,$apmLimpio,$fechaNac,$emailLimpio,$contra];
-
         $id_usuario = usuario::register($datos); //registra al usuario y saca el id
 
       }else{
@@ -45,10 +46,11 @@
         }else{
           echo "Hubo un problema al registrar el usuario.";
       }
-    /*
-    falta validaciones front de todo, back de todo menos correo y pass, numero de intentos
-    */
+
 ?>
+    /*
+    falta validaciones front de todo
+    */
 
 <!DOCTYPE html>
 <html lang="en">

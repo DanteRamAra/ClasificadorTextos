@@ -15,6 +15,9 @@
         header('location:inicio.php');
 
     }
+    /*
+    validacion formulario
+    */ 
 ?>
 <!DOCTYPE html>
 <html lang="en">
