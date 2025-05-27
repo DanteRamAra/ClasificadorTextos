@@ -10,7 +10,7 @@
     $datos=
     [$email=$_POST['email'],
     $contra];
-    $id_usuario = usuario::validarUsuario($datos);
+    $id_usuario = validaciones::validarInicio($datos);
     if ($id_usuario) {
             session_start();
             $_SESSION['id_usuario'] = $id_usuario;
@@ -19,7 +19,13 @@
         } else {
             echo "Hubo un problema al iniciar sesion.";
         }
-    }    
+    }   
+    /*
+    Comprobar existencia del usuario (DB).
+    Validar contraseña (password_verify).
+    Bloquear tras intentos fallidos.
+   Generar token seguro (JWT/sesión).
+    */ 
 ?>
 
 <!DOCTYPE html>

@@ -2,11 +2,10 @@
     session_start();
     require ('FuncionesPHP/funciones.php');
     require('funcion.php');
-
-    verificarSesionActiva();
+    verificarSesionActiva();//verifica si existe una sesion iniciada en ese momento
     if($_POST){
-        $contra=hash('sha256',$_POST['pass']);
-         if (strlen($_POST['pass']) < 8) {
+        $contra=password_hash($_POST['pass'], PASSWORD_DEFAULT);//cifra contraseña
+         if (strlen($_POST['pass']) < 8) {//validacion de numero caracteres
         
           die("Error: La contraseña debe tener al menos 8 caracteres.");
         } 
@@ -16,18 +15,34 @@
         $fechaNac=$_POST['fechaNac'],
         $email=$_POST['email'],
         $contra];
-        
-        $id_usuario = usuario::register($datos);
-
-        if ($id_usuario) {
+        $verificaEmail=validaciones::email($email);
+        if(!($email=$verificaEmail)){//verifica que el email no exista
+          $id_usuario = usuario::register($datos); //registra al usuario y saca el id
+          if ($id_usuario) {//redirige a inicio.php
             session_start();
             $_SESSION['id_usuario'] = $id_usuario;
             header('location:inicio.php');
             exit();
-        } else {
+          } else {
             echo "Hubo un problema al registrar el usuario.";
+          }
+        }else{
+          echo "Hubo un problema al registrar el usuario.";
         }
     }
+
+    /*
+    Unicidad (email/usuario no existente) LISTO
+    Sanitización de datos
+    Hash seguro de contraseña LISTO
+    Límite de registros por IP 
+    Validar nombre completo (solo letras/espacios).
+    Validar formato de email.
+    Verificar fortaleza de contraseña.
+    Confirmar coincidencia de contraseñas.
+    Validar formato de teléfono (si aplica).
+    Implementar CAPTCHA.
+    */
 ?>
 
 <!DOCTYPE html>
@@ -65,7 +80,10 @@
 </nav>
 
     <form action="register.php" method="post" id="registro">
-        <input type="text" name="name" id="" placeholder="Nombre">
+        <input type="text" name="name" id="nombre" placeholder="Nombre">
+        <small id="nombre_error" style="color: red; display: none;">
+        El nombre solo puede contener letras
+        </small>
         <br>
         <input type="text" name="app" id="" placeholder="Apellido paterno">
         <br>
@@ -82,7 +100,6 @@
         <br>
         <input type="submit" value="Enviar">
     </form>
-    <script src=validacionesJS/registro.js></script>
 </body>
 </html>
 

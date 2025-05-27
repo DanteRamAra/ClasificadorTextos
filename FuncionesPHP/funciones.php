@@ -8,11 +8,11 @@ class usuario{
             $consult=$conn->prepare("insert into usuarios (id_usuario,nombre_usuario,app_usuario,apm_usuario,fechaNac_usuario,correo_usuario,password_usuario,rol_usuario) values (null,:nom,:app,:apm,:fecha,:correo,:pass,'Alumno') ");
             $conn->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
             $consult->execute(array(
-            ':nom'=>$datos[0],
-            ':app'=>$datos[1],
-            ':apm'=>$datos[2],
+             ':nom' => htmlspecialchars($datos[0], ENT_QUOTES, 'UTF-8'), 
+            ':app' => htmlspecialchars($datos[1], ENT_QUOTES, 'UTF-8'),
+            ':apm' => htmlspecialchars($datos[2], ENT_QUOTES, 'UTF-8'),
             ':fecha'=>$datos[3],
-            ':correo'=>$datos[4],
+            ':correo' => filter_var($datos[4], FILTER_SANITIZE_EMAIL),
             ':pass'=>$datos[5]   
             ));
             return $conn->lastInsertId();
@@ -20,21 +20,7 @@ class usuario{
             echo "conexion erronea".$error->getMessage();
         }
     }
-    public static function validarUsuario($datos){
-       try {
-            $conn=new PDO("mysql:host=localhost;port=3306;dbname=adsclasificador",'root','');
-            $consult=$conn->prepare("select id_usuario from usuarios where correo_usuario=:correo_usu && password_usuario=:pass_usuario");
-            $conn->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
-            $consult->execute(array(
-            ':correo_usu'=>$datos[0],
-            ':pass_usuario'=>$datos[1]  
-            ));
-            $resultado = $consult->fetch(PDO::FETCH_ASSOC);
-            return $resultado ? $resultado['id_usuario'] : false;
-        } catch (PDOException $error) {
-            echo "conexion erronea".$error->getMessage();
-        }  
-    }
+    
     public static function mostrar($id_usuario){
         try {
             $conn = new PDO("mysql:host=localhost;port=3306;dbname=adsclasificador", 'root', '');
@@ -69,9 +55,9 @@ class publicaciones{
 }
 
 class validaciones{
-    public static function email($email){
+    public static function email($email){ //existencia de email
         try {
-             $conn=new PDO("mysql:host=localhost;port=3306;dbname=adsclasificador",'root','');
+            $conn=new PDO("mysql:host=localhost;port=3306;dbname=adsclasificador",'root','');
             $consult=$conn->prepare("select correo_usuario from usuarios where correo_usuario=:email ");
             $conn->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
             $consult->execute([':email'=>$email]);
@@ -81,6 +67,21 @@ class validaciones{
             echo "conexion erronea".$error->getMessage();
             
         }
+    }
+    public static function validarInicio($datos){
+       try {
+            $conn=new PDO("mysql:host=localhost;port=3306;dbname=adsclasificador",'root','');
+            $consult=$conn->prepare("select id_usuario from usuarios where correo_usuario=:correo_usu && password_usuario=:pass_usuario");
+            $conn->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
+            $consult->execute(array(
+            ':correo_usu'=>$datos[0],
+            ':pass_usuario'=>$datos[1]  
+            ));
+            $resultado = $consult->fetch(PDO::FETCH_ASSOC);
+            return $resultado ? $resultado['id_usuario'] : false;
+        } catch (PDOException $error) {
+            echo "conexion erronea".$error->getMessage();
+        }  
     }
 }
 
