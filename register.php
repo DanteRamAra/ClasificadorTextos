@@ -15,7 +15,7 @@
         $fechaNac=$_POST['fechaNac'],
         $email=$_POST['email'],
         $contra];
-        $verificaEmail=validaciones::email($email);
+        $verificaEmail=validaciones::encontrarEmail($email);
         if(!($email=$verificaEmail)){//verifica que el email no exista
           $id_usuario = usuario::register($datos); //registra al usuario y saca el id
           if ($id_usuario) {//redirige a inicio.php
@@ -32,16 +32,7 @@
     }
 
     /*
-    Unicidad (email/usuario no existente) LISTO
-    Sanitización de datos
-    Hash seguro de contraseña LISTO
-    Límite de registros por IP 
-    Validar nombre completo (solo letras/espacios).
-    Validar formato de email.
-    Verificar fortaleza de contraseña.
-    Confirmar coincidencia de contraseñas.
-    Validar formato de teléfono (si aplica).
-    Implementar CAPTCHA.
+    falta validaciones front de todo, back de todo menos correo y pass, numero de intentos
     */
 ?>
 

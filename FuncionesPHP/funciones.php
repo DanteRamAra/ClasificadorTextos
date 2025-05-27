@@ -55,7 +55,7 @@ class publicaciones{
 }
 
 class validaciones{
-    public static function email($email){ //existencia de email
+    public static function encontrarEmail($email){ //existencia de email
         try {
             $conn=new PDO("mysql:host=localhost;port=3306;dbname=adsclasificador",'root','');
             $consult=$conn->prepare("select correo_usuario from usuarios where correo_usuario=:email ");

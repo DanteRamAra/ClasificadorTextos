@@ -6,20 +6,20 @@
     verificarSesionActiva();
 
     if($_POST){
-    $contra=hash('sha256',$_POST['pass']);
-    $datos=
-    [$email=$_POST['email'],
-    $contra];
-    $id_usuario = validaciones::validarInicio($datos);
-    if ($id_usuario) {
-            session_start();
-            $_SESSION['id_usuario'] = $id_usuario;
-            header('location:inicio.php');
-            exit();
-        } else {
-            echo "Hubo un problema al iniciar sesion.";
-        }
-    }   
+      $email=$_POST['email'];
+      $contra=$_POST['pass'];
+      $usuario=validaciones::encontrarEmail($email);
+      
+      if($usuario && password_verify($contra, $usuario['password_usuario'])) {
+          session_regenerate_id(true); 
+          $_SESSION['id_usuario'] = $usuario['id_usuario'];
+          
+          header('location: inicio.php');
+          exit();
+      } else {
+        echo "usuario no encontrado";
+      }
+    }
     /*
     Comprobar existencia del usuario (DB).
     Validar contraseña (password_verify).
