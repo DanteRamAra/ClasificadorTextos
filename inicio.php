@@ -27,7 +27,7 @@
     <title>Document</title>
 </head>
 <body>
-    <h1> Bienvenido <?php echo $datosUsuario['nombre_usuario']?></h1>
+    <h1> Bienvenido <?php echo $datosUsuario['nombre_usuario']." ".$datosUsuario['app_usuario']?></h1>
     <form action="inicio.php" method="post">
         <input type="text" name="titulo" id="" placeholder="Titulo">
         <br>
@@ -36,5 +36,10 @@
         <input type="text" name="cate" id="" placeholder="categoria">
         <input type="submit" value="Enviar">
     </form>
-</body>
+
+    <form method="post" action="cerrarS.php">
+        <input type="submit" name="logout" value="Cerrar sesión">
+    </form>
+
+   </body>
 </html>

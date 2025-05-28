@@ -1,6 +1,6 @@
 <?php
     session_start();
-    require ('FuncionesPHP/InteraccionBD.php');
+    require ('FuncionesPHP/funciones.php');
     require ('FuncionesPHP/validacionesBack.php');
     require('funcion.php');
     verificarSesionActiva();//verifica si existe una sesion iniciada en ese momento
@@ -34,23 +34,22 @@
         die("Error: Datos ingresados incorrectamente");
         exit();
       }
-
       
       if($id_usuario){//redirige a inicio.php
           $_SESSION['id_usuario']=$id_usuario;
           header('location:inicio.php');
           exit();
+
           }else{
             echo "Hubo un problema al registrar el usuario.";
           }
-        }else{
-          echo "Hubo un problema al registrar el usuario.";
-      }
+    }
 
-?>
     /*
     falta validaciones front de todo
     */
+?>
+    
 
 <!DOCTYPE html>
 <html lang="en">
@@ -62,35 +61,32 @@
 
 </head>
 <body>
-<nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">Clasificador</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarColor01">
-      <ul class="navbar-nav me-auto">
-        <li class="nav-item">
-          <a class="nav-link active" href="index.php">Home
-            <span class="visually-hidden">(current)</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="inicioS.php">login</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="register.php">Registro</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
+    <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Clasificador</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarColor01">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link active" href="index.php">Home
+                <span class="visually-hidden">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="inicioS.php">login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="register.php">Registro</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
 
     <form action="register.php" method="post" id="registro">
         <input type="text" name="name" id="nombre" placeholder="Nombre">
-        <small id="nombre_error" style="color: red; display: none;">
-        El nombre solo puede contener letras
-        </small>
         <br>
         <input type="text" name="app" id="" placeholder="Apellido paterno">
         <br>
@@ -101,12 +97,11 @@
         <input type="email" name="email" id="" placeholder="Email">
         <br>
         <input type="password" name="pass" id="pass" placeholder="Password">
-        <small id="password-error" style="color: red; display: none;">
-        La contraseña debe tener al menos 8 caracteres.
-        </small>
+
         <br>
         <input type="submit" value="Enviar">
     </form>
+
 </body>
 </html>
 

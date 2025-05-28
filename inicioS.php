@@ -1,7 +1,7 @@
 <?php
     session_start();
 
-    require ('FuncionesPHP/funciones.php');
+    require ('FuncionesPHP/validacionesBack.php');
     require('funcion.php');
     verificarSesionActiva();
 
@@ -9,16 +9,18 @@
       $email=$_POST['email'];
       $contra=$_POST['pass'];
       $usuario=validaciones::encontrarEmail($email);
-      
-      if($usuario && password_verify($contra, $usuario['password_usuario'])) {
+      $emailValido=filter_var($email,FILTER_VALIDATE_EMAIL);
+      if($emailValido){
+        if($usuario && password_verify($contra, $usuario['password_usuario'])) {
           session_regenerate_id(true); 
           $_SESSION['id_usuario'] = $usuario['id_usuario'];
-          
           header('location: inicio.php');
           exit();
-      } else {
-        echo "usuario no encontrado";
+        }else{
+          echo "credenciales incorrectas";
+        }
       }
+      
     }
     /*
     Comprobar existencia del usuario (DB).
