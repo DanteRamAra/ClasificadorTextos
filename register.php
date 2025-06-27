@@ -57,50 +57,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro</title>
-        <link rel="stylesheet" href="https://bootswatch.com/5/flatly/bootstrap.min.css">
-
+    <link rel="stylesheet" href="Estilos/stylesregister.css" />
 </head>
+
 <body>
-    <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">Clasificador</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarColor01">
-          <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-              <a class="nav-link active" href="index.php">Home
-                <span class="visually-hidden">(current)</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="inicioS.php">login</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="register.php">Registro</a>
-            </li>
-          </ul>
-        </div>
-      </div>
+    <header>
+    <h1 Class="">Clasificador</h1>
+    <nav>
+      <a href="#Home">Inicio</a>
+      <a href="inicioS.php">Iniciar Sesion</a>
+      <a href="register.php">Registro</a>
+      <a href="#contacto">Contacto</a> 
     </nav>
+    </header>
 
-    <form action="register.php" method="post" id="registro">
-        <input type="text" name="name" id="nombre" placeholder="Nombre">
-        <br>
-        <input type="text" name="app" id="" placeholder="Apellido paterno">
-        <br>
-        <input type="text" name="apm" id="" placeholder="Apellido materno">
-        <br>
-        <input type="date" name="fechaNac" id="" >
-        <br>
-        <input type="email" name="email" id="" placeholder="Email">
-        <br>
-        <input type="password" name="pass" id="pass" placeholder="Password">
+    <br>
+    <div class="wrapper"> 
+        <form action="register.php" method="post" id="registro">
+            <h1>Registro</h1>
+            <h3>Ingresa los siguientes datos:</h2>
+            <div class="input-box">
+                <input type="text" name="name" id="nombre" placeholder="Nombre">
+            </div>
+            <div class="input-box">
+                <input type="text" name="app" id="" placeholder="Apellido Paterno">
+            </div>
+              <div class="input-box">
+                <input type="text" name="apm" id="" placeholder="Apellido Materno">
+            </div>
+            <div class="input-box">
+                <input type="date" name="fechaNac" id="" >
+            </div>
+            
+            <div class="input-box">
+                <input type="email" name="email" id="" placeholder="Email">
+            </div>
+              <div class="input-box">
+                <input type="password" name="pass" id="pass" placeholder="Password">
+            </div>
+            <div class="input-box">
+                <input type="submit" value="Enviar">
+            </div>
+        </form>
+    </div>
 
-        <br>
-        <input type="submit" value="Enviar">
-    </form>
 
 </body>
 </html>

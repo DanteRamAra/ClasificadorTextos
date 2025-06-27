@@ -10,22 +10,26 @@ const BASE_URL='/CLASIFICADORTEXTOS';
 const GUARDAR_WORDINDEX_URL=`${BASE_URL}/guardar_wordindex.php`;
 const GUARDAR_MODELO_URL=`${BASE_URL}/guardar_modelo.php`;
 function inicializarUI() {
-    if (!document.getElementById('estadoModelo')) {
-        estadoElement=document.createElement('div');
-        estadoElement.id='estadoModelo';
-        estadoElement.style.padding='10px';
-        estadoElement.style.margin='10px 0';
-        estadoElement.style.border='1px solid #ddd';
-        
-        const h1=document.querySelector('h1');
-        if(h1){
-            h1.insertAdjacentElement('afterend', estadoElement);
-        }else{
-            document.body.insertAdjacentElement('afterbegin', estadoElement);
-        }
-    }else{
-        estadoElement=document.getElementById('estadoModelo');
+if (!document.getElementById('estadoModelo')) {
+    estadoElement = document.createElement('div');
+    estadoElement.id = 'estadoModelo';
+    estadoElement.style.padding = '10px';
+    estadoElement.style.margin = '10px 0';
+    estadoElement.style.border = '1px solid #ddd';
+    estadoElement.style.backgroundColor = 'green'; // Fondo verde
+    estadoElement.style.color = 'black';           // Letra negra
+    estadoElement.textContent = 'Conectado';       // Texto que dice "Conectado"
+    
+    const h1 = document.querySelector('h1');
+    if (h1) {
+        h1.insertAdjacentElement('afterend', estadoElement);
+    } else {
+        document.body.insertAdjacentElement('afterbegin', estadoElement);
     }
+} else {
+    estadoElement = document.getElementById('estadoModelo');
+}
+
 }
 function actualizarEstado(mensaje,esError=false){
     if (!estadoElement) inicializarUI();
