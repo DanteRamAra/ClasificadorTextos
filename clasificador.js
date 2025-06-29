@@ -1,35 +1,30 @@
-// Configuración del modelo
 const MAX_LEN=20;
 const VOCAB_SIZE=1000;
 const categorias=['queja', 'duda', 'venta', 'gestionEscolar'];
-const MODELO_URL='modelo/tfjs_model/model.json';
 let modelo;
 let wordIndex={};
 let estadoElement;
-const BASE_URL='/CLASIFICADORTEXTOS';
-const GUARDAR_WORDINDEX_URL=`${BASE_URL}/guardar_wordindex.php`;
+// Update these constants at the top of your file
+const MODELO_URL = '/CLASIFICADORTEXTOS/modelo/tfjs_model/model.json';
+const BASE_URL = '';const GUARDAR_WORDINDEX_URL=`${BASE_URL}/guardar_wordindex.php`;
 const GUARDAR_MODELO_URL=`${BASE_URL}/guardar_modelo.php`;
 function inicializarUI() {
-if (!document.getElementById('estadoModelo')) {
-    estadoElement = document.createElement('div');
-    estadoElement.id = 'estadoModelo';
-    estadoElement.style.padding = '10px';
-    estadoElement.style.margin = '10px 0';
-    estadoElement.style.border = '1px solid #ddd';
-    estadoElement.style.backgroundColor = 'green'; // Fondo verde
-    estadoElement.style.color = 'black';           // Letra negra
-    estadoElement.textContent = 'Conectado';       // Texto que dice "Conectado"
-    
-    const h1 = document.querySelector('h1');
-    if (h1) {
-        h1.insertAdjacentElement('afterend', estadoElement);
-    } else {
-        document.body.insertAdjacentElement('afterbegin', estadoElement);
+    if (!document.getElementById('estadoModelo')) {
+        estadoElement=document.createElement('div');
+        estadoElement.id='estadoModelo';
+        estadoElement.style.padding='10px';
+        estadoElement.style.margin='10px 0';
+        estadoElement.style.border='1px solid #ddd';
+        
+        const h1=document.querySelector('h1');
+        if(h1){
+            h1.insertAdjacentElement('afterend', estadoElement);
+        }else{
+            document.body.insertAdjacentElement('afterbegin', estadoElement);
+        }
+    }else{
+        estadoElement=document.getElementById('estadoModelo');
     }
-} else {
-    estadoElement = document.getElementById('estadoModelo');
-}
-
 }
 function actualizarEstado(mensaje,esError=false){
     if (!estadoElement) inicializarUI();
@@ -52,6 +47,15 @@ async function obtenerDatosEntrenamiento(){
         actualizarEstado('Error cargando datos de entrenamiento',true);
         return [];
     }
+}
+function esAdministrador() {
+    // Implement your actual admin check logic here
+    // This could check a cookie, session, or user role
+    // For now, we'll return true to allow training if model fails to load
+    return true;
+    
+    // In a real implementation, it might look like:
+    // return localStorage.getItem('userRole') === 'admin';
 }
 
 function inicializarTokenizer(textos){
@@ -148,21 +152,27 @@ function crearModelo(){
     console.log('Modelo creado exitosamente');
     return model;
 }
-async function cargarModeloDesdeServidor(){
-    try{
-        const check=await fetch(MODELO_URL);
-        if (!check.ok){
-            throw new Error('Archivo model.json no encontrado');
+async function cargarModeloDesdeServidor() {
+    try {
+        actualizarEstado('Intentando cargar modelo desde: ' + MODELO_URL);
+        const check = await fetch(MODELO_URL);
+        if (!check.ok) {
+            throw new Error(`Archivo no encontrado en ${MODELO_URL}. Status: ${check.status}`);
         }
-        modelo = await tf.loadLayersModel(MODELO_URL); //carga el modelo
-        const response = await fetch(`${BASE_URL}/modelo/wordIndex.json`);
-        if (!response.ok) throw new Error('Error cargando vocabulario');
-        wordIndex = await response.json();
         
-        actualizarEstado('Modelo cargado desde servidor');
+        modelo = await tf.loadLayersModel(MODELO_URL);
+        
+        const vocabUrl = `${BASE_URL}/modelo/wordIndex.json`;
+        actualizarEstado('Intentando cargar vocabulario desde: ' + vocabUrl);
+        const response = await fetch(vocabUrl);
+        if (!response.ok) throw new Error(`Error cargando vocabulario. Status: ${response.status}`);
+        
+        wordIndex = await response.json();
+        actualizarEstado('Modelo y vocabulario cargados correctamente');
         return true;
-    }catch(error){
-        console.error('Error cargando modelo:',error);
+    } catch(error) {
+        console.error('Error detallado:', error);
+        actualizarEstado(`Error cargando modelo: ${error.message}`, true);
         return false;
     }
 }
@@ -289,29 +299,40 @@ function configurarUI(){
     }
     
 }
-async function inicializarSistema(){
-    try{
+async function inicializarSistema() {
+    try {
         inicializarUI();
         actualizarEstado('Iniciando sistema');
+        
+        // First try to load the pre-trained model
         actualizarEstado('Buscando modelo pre-entrenado');
-        const modeloCargado=await cargarModeloDesdeServidor();
-        if(!modeloCargado){
-            if(esAdministrador()){
-                actualizarEstado('No se encontró modelo. Entrenando nuevo');
-                const entrenamientoExitoso=await entrenarYGuardarEnServidor();
-                if(entrenamientoExitoso){
+        const modeloCargado = await cargarModeloDesdeServidor();
+        
+        if(!modeloCargado) {
+            actualizarEstado('No se encontró modelo pre-entrenado');
+            
+            // Check if we should train a new model
+            if(esAdministrador()) {
+                actualizarEstado('Iniciando entrenamiento de nuevo modelo');
+                const entrenamientoExitoso = await entrenarYGuardarEnServidor();
+                
+                if(entrenamientoExitoso) {
                     await cargarModeloDesdeServidor();
+                } else {
+                    actualizarEstado('Falló el entrenamiento del modelo', true);
+                    return;
                 }
-            }else{
-                actualizarEstado('Modelo no disponible',true);
+            } else {
+                actualizarEstado('Se requiere administrador para entrenar modelo', true);
                 return;
             }
         }
+        
         configurarUI();
         actualizarEstado('Sistema listo para usar');
-    }catch(error){
-        console.error('Error en inicialización:',error);
-        actualizarEstado(`Error:${error.message}`,true);
+    } catch(error) {
+        console.error('Error en inicialización:', error);
+        actualizarEstado(`Error: ${error.message}`, true);
     }
 }
 document.addEventListener('DOMContentLoaded', inicializarSistema);
