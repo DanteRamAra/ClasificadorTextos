@@ -61,11 +61,10 @@ if ($_POST) {
             </div>
             <div class="remember-forgot">
                 <label><input type="checkbox"> Remember me</label>
-                <a href="#PorImplementar">¿Olvidaste tu contraseña? Ni pedo</a>
             </div> 
             <button type="submit" class="btn" value="Enviar">Login</button>
             <div class="register-link">
-                <p>¿No tienes una cuenta? <a href="#Implementar">Regístrate en tu casa</a></p>
+                <p>¿No tienes una cuenta? <a href="register.php">Regístrate</a></p>
             </div>
         </form>
     </div>

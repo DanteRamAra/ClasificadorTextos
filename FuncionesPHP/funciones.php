@@ -65,7 +65,7 @@ class publicaciones{
             $query="SELECT p.*,u.nombre_usuario,u.app_usuario,u.apm_usuario 
                     FROM publicaciones p 
                     JOIN usuarios u ON p.id_usuario=u.id_usuario 
-                    ORDER BY RAND()";
+                    ORDER BY p.fecha_publi DESC";
             $stmt=$conn->prepare($query);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);

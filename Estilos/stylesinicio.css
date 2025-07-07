@@ -42,7 +42,7 @@ header nav input {
   background: url('https://via.placeholder.com/1200x500/333333/ffdd00?text=Bienvenido') no-repeat center/cover;
   padding: 6rem 2rem;
   text-align: center;
-  color: red;
+  color: rgb(0, 0, 0);
   border-radius: 0 0 1rem 1rem;
 }
 .hero h2 { font-size: 2.8rem; margin-bottom: 1rem; text-shadow: 2px 2px 6px rgba(0,0,0,0.3); }
@@ -94,15 +94,6 @@ footer {
   header { flex-direction: column; }
 }
 
-/**{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Montserrat",sans-serif;
-}*/
-
-
-
 .wrapper {
     position: relative;
     width: 800px;
@@ -129,7 +120,6 @@ footer {
     width: 100%;
     height: 50px;
     margin: 30px 0;
-
 }
 
 .input-box input{
@@ -159,13 +149,11 @@ footer {
 
 .input-box strong {
     position: absolute;
-    left: 2px; /* Lo movemos a la izquierda con 20px de separación */
+    left: 2px;
     top: 50%;
     transform: translateY(-50%);
     font-size: 20px;
 }
-
-
 
 .wrapper .remember-forgot{
     display: flex;
@@ -186,7 +174,7 @@ footer {
 
 .wrapper .btn {
     width: 100%;
-    height: 45px; /* Antes era 100%, ahora es 50px */
+    height: 45px;
     background: white;
     border: none;
     outline: none;
@@ -197,7 +185,6 @@ footer {
     color: #333;
     font-weight: 600;
 }
-
 
 .wrapper .register-link {
     font-size: 14.5px;
@@ -217,7 +204,36 @@ footer {
 
 .publicacion {
     padding: 1rem;
-    background: transparent; /* Para que se distinga del fondo */
+    background: transparent;
     border-radius: 8px;
-    text-align: left; /* También alinea el texto automáticamente a la izquierda */
+    text-align: left;
+}
+
+/* Nuevos estilos para los paneles */
+.panel {
+    margin-bottom: 1rem;
+    border: 1px solid #000000;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.panel-header {
+    padding: 1rem;
+    background-color: #ffdd00;
+    color: #333;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.panel-content {
+    padding: 1rem;
+    background-color: rgb(0, 0, 0);
+    display: none;
+}
+.panel.active .panel-content {
+    display: block;
+}
+.toggle-icon {
+    font-size: 1.2rem;
 }
